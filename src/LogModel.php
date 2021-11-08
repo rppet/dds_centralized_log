@@ -39,6 +39,7 @@ class LogModel extends SubTableAbstract
             $table->integer('user_id')->comment('访问者id');
             $table->integer('time')->comment('访问时间');
             $table->index('user_id', 'idx_user_id');
+            $table->index('time', 'idx_time');
         });
 
         return $result ? true : false;
