@@ -21,7 +21,7 @@ Laravel Centralized access log
     $tableName = $logModel->getTable();
     
     // 如果分表不存在则新建表
-    if (!$logServer->checkTableIsExists($subTablePrefix)){
+    if (!$logServer->checkTableIsExists($tableName)){
         $logServer->createTable($tableName);
     }
     
