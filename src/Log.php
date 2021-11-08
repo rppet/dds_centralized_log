@@ -36,7 +36,6 @@ class Log
         $data['url'] = $data['url'] ?? $this->request->getMethod() . ':' . $this->request->getPathInfo();
         $data['param'] = $data['param'] ?? json_encode($this->request->all());
         $data['time'] = $data['time'] ?? time();
-        $data['client_ips'] = $data['client_ips'] ?? json_encode($this->request->getClientIps());
 
         return DB::table($tableName)->insert($data);
     }
