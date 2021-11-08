@@ -1,0 +1,22 @@
+{
+    "name": "hanuas/centralized_log",
+    "description": "Centralized access log processing analysis",
+    "authors": [
+        {
+            "name": "hanus",
+            "email": "1027577992@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hanuas\\CentralizedLog\\": "src"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    }
+}
