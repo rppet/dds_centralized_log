@@ -1,10 +1,37 @@
 <?php
-function encrypt($data, $key, $method = 'aes-128-cbc')
+/**
+ * Notes:
+ * @param $data
+ * @param $key
+ * @param string $method
+ * @return false|string
+ * DateTime:2021/11/16 5:45 下午
+ */
+function encrypt_data($data, $key, $method = 'aes-128-cbc')
 {
-    return openssl_encrypt($data, $method, $key, 0);
+    if (in_array($method, openssl_get_cipher_methods())){
+        $ivlen = openssl_cipher_iv_length($method);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        return openssl_encrypt($data, $method, $key, 0, $iv);
+    }
+    return $data;
 }
 
-function decrypt($data, $key, $method = 'aes-128-cbc')
+/**
+ * Notes:
+ * @param $data
+ * @param $key
+ * @param string $method
+ * @return false|string
+ * DateTime:2021/11/16 5:45 下午
+ */
+function decrypt_data($data, $key, $method = 'aes-128-cbc')
 {
-    return openssl_decrypt($data, $method, $key, 0);
+    if (in_array($method, openssl_get_cipher_methods())){
+        $ivlen = openssl_cipher_iv_length($method);
+        $iv = substr($data, 0, $ivlen);
+        $data = substr($data, $ivlen);
+        return openssl_decrypt($data, $method, $key, 0, $iv);
+    }
+    return $data;
 }
