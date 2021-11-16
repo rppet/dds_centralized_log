@@ -12,7 +12,7 @@ class Log
      */
     public $request;
 
-    private $encryptKey = 'iesRPddeseeiomv932kdf';
+    private $encryptKey;
 
     /**
      * Log constructor.
@@ -20,6 +20,7 @@ class Log
     public function __construct()
     {
         $this->request = Request::instance();
+        $this->encryptKey = config('centralized_log.encrypt_key');
     }
 
     /**
@@ -87,6 +88,6 @@ class Log
     private function encryptData($data)
     {
         $key = $this->encryptKey;
-        return encrypt($data, $key);
+        return encrypt_data($data, $key);
     }
 }
