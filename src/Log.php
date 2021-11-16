@@ -12,6 +12,8 @@ class Log
      */
     public $request;
 
+    private $encryptKey = 'iesRPddeseeiomv932kdf';
+
     /**
      * Log constructor.
      */
@@ -34,7 +36,7 @@ class Log
         }
 
         $data['url'] = $data['url'] ?? $this->request->getMethod() . ':' . $this->request->getPathInfo();
-        $data['param'] = $data['param'] ?? json_encode($this->request->all());
+        $data['param'] = $data['param'] ?? $this->encryptData(json_encode($this->request->all()));
         $data['time'] = $data['time'] ?? time();
 
         return DB::table($tableName)->insert($data);
@@ -74,5 +76,17 @@ class Log
             return LogModel::createTable($tableName);
         }
         return true;
+    }
+
+    /**
+     * Notes:加密数据
+     * @param $data
+     * @return false|string
+     * DateTime:2021/11/16 4:17 下午
+     */
+    private function encryptData($data)
+    {
+        $key = $this->encryptKey;
+        return encrypt($data, $key);
     }
 }
