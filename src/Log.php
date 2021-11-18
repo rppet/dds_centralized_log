@@ -13,11 +13,6 @@ class Log
     public $request;
 
     /**
-     * @var string
-     */
-    private $encryptKey = 'iesRPddeseeiomv932kdf';
-
-    /**
      * @var string[]
      */
     private $filterArray = ['username', 'user_name', 'password', 'pass_word', 'token', 'jwt', 'mobile', 'user_mobile', 'phone'];
