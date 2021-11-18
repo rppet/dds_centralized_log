@@ -14,5 +14,10 @@ return [
     /**
      * sub table type
      */
-    'type'  => 'date'
+    'type'  => 'date',
+
+    /**
+     * encrypt key
+     */
+    'encrypt_key' => 'nSNeddf1dfskwe354o3df209gs'
 ];
