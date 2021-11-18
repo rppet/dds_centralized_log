@@ -12,7 +12,15 @@ class Log
      */
     public $request;
 
-    private $encryptKey;
+    /**
+     * @var string
+     */
+    private $encryptKey = 'iesRPddeseeiomv932kdf';
+
+    /**
+     * @var string[]
+     */
+    private $filterArray = ['username', 'user_name', 'password', 'pass_word', 'token', 'jwt', 'mobile', 'user_mobile', 'phone'];
 
     /**
      * Log constructor.
@@ -20,7 +28,6 @@ class Log
     public function __construct()
     {
         $this->request = Request::instance();
-        $this->encryptKey = config('centralized_log.encrypt_key');
     }
 
     /**
@@ -37,7 +44,7 @@ class Log
         }
 
         $data['url'] = $data['url'] ?? $this->request->getMethod() . ':' . $this->request->getPathInfo();
-        $data['param'] = $data['param'] ?? $this->encryptData(json_encode($this->request->all()));
+        $data['param'] = $data['param'] ?? json_encode(filter_params($this->request->all(), $this->filterArray));
         $data['time'] = $data['time'] ?? time();
 
         return DB::table($tableName)->insert($data);
