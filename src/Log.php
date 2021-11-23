@@ -38,7 +38,7 @@ class Log
             return true;
         }
 
-        $data['url'] = $data['url'] ?? $this->request->getMethod() . ':' . $this->request->getPathInfo();
+        $data['name'] = $data['name'] ?? $this->request->getMethod() . ':' . $this->request->getPathInfo();
         $data['param'] = $data['param'] ?? json_encode(filter_params($this->request->all(), $this->filterArray));
         $data['time'] = $data['time'] ?? time();
 
@@ -79,17 +79,5 @@ class Log
             return LogModel::createTable($tableName);
         }
         return true;
-    }
-
-    /**
-     * Notes:加密数据
-     * @param $data
-     * @return false|string
-     * DateTime:2021/11/16 4:17 下午
-     */
-    private function encryptData($data)
-    {
-        $key = $this->encryptKey;
-        return encrypt_data($data, $key);
     }
 }
