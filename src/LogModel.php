@@ -33,7 +33,6 @@ class LogModel extends SubTableAbstract
             $table->increments('id')->comment('自增id');
             $table->tinyInteger('app')->comment('来源id');
             $table->string('type', 50)->comment('访问类型');
-            $table->string('url', 255)->comment('访问url');
             $table->string('name', 255)->comment('访问名称');
             $table->text('param')->comment('请求参数');
             $table->integer('user_id')->comment('访问者id');
