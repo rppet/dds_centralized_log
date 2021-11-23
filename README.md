@@ -3,12 +3,12 @@ Laravel Centralized access log
 
 ## 安装
 
-    "centralized_log": {
+    "dds_centralized_log": {
       "type": "git",
-      "url": "https://github.com/hanuas/centralized_log.git"
+      "url": "https://github.com/rppet/dds_centralized_log.git"
     }
     
-    composer require hanuas/centralized_log:dev-master
+    composer require rppet/dds_centralized_log:dev-master
 
 ## 示例代码
 
