@@ -37,6 +37,7 @@ class LogModel extends SubTableAbstract
             $table->text('param')->comment('请求参数');
             $table->integer('user_id')->comment('访问者id');
             $table->integer('time')->comment('访问时间');
+            $table->integer('count')->comment('访问计数')->default(1);
             $table->index('user_id', 'idx_user_id');
             $table->index('time', 'idx_time');
         });

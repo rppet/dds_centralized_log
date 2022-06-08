@@ -18,6 +18,11 @@ class Log
     private $filterArray = ['username', 'user_name', 'password', 'pass_word', 'token', 'jwt', 'mobile', 'user_mobile', 'phone'];
 
     /**
+     * @var string[]
+     */
+    private $statisticsType = ['every_time', 'every_day'];
+
+    /**
      * Log constructor.
      */
     public function __construct()
@@ -32,13 +37,30 @@ class Log
      * @return bool
      * DateTime:2021/11/3 5:03 下午
      */
-    public function addLog($tableName, $data = [])
+    public function addLog($tableName, $data = [], $statisticsType = 'every_time')
     {
         if (!$data){
             return true;
         }
 
         $data['name'] = $data['name'] ?? $this->request->getMethod() . ':' . $this->request->getPathInfo();
+
+        //判断访问统计类型
+        if (in_array($statisticsType, $this->statisticsType) && $statisticsType == 'every_day'){
+            $condition = [
+                ['app', $data['app']],
+                ['type', $data['type']],
+                ['name', $data['name']],
+                ['user_id', $data['user_id']],
+                ['time', '>=', strtotime(date('Y-m-d'))],
+                ['time', '<', strtotime(date('Y-m-d', strtotime('+1 day')))]
+            ];
+
+            if ($this->incrColumnByCondition($tableName, 'count', $condition)){
+                return true;
+            }
+        }
+
         $data['param'] = $data['param'] ?? json_encode(filter_params($this->request->all(), $this->filterArray));
         $data['time'] = $data['time'] ?? time();
 
@@ -79,5 +101,29 @@ class Log
             return LogModel::createTable($tableName);
         }
         return true;
+    }
+
+    /**
+     * Notes:
+     * @param string $tableName
+     * @param string $column
+     * @param array $condition
+     * @return bool
+     */
+    public function incrColumnByCondition(string $tableName, string $column, array $condition = [])
+    {
+        if (DB::table($tableName)->where($condition)->count() > 0){
+            try {
+                DB::beginTransaction();
+                DB::table($tableName)->where($condition)->lockForUpdate()->increment($column);
+                DB::commit();
+            } catch (\Exception $exception){
+                DB::rollBack();
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
