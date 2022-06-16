@@ -44,13 +44,15 @@ class Log
         }
 
         $data['name'] = $data['name'] ?? $this->request->getMethod() . ':' . $this->request->getPathInfo();
+        $data['param'] = $data['param'] ?? json_encode(filter_params($this->request->all(), $this->filterArray));
 
         //判断访问统计类型
-        if (in_array($statisticsType, $this->statisticsType) && $statisticsType == 'every_day'){
+        if (in_array($statisticsType, $this->statisticsType) && $statisticsType == 'every_day' && $this->request->getMethod() == 'GET'){
             $condition = [
                 ['app', $data['app']],
                 ['type', $data['type']],
                 ['name', $data['name']],
+                ['param', $data['param']],
                 ['user_id', $data['user_id']],
                 ['time', '>=', strtotime(date('Y-m-d'))],
                 ['time', '<', strtotime(date('Y-m-d', strtotime('+1 day')))]
@@ -61,7 +63,6 @@ class Log
             }
         }
 
-        $data['param'] = $data['param'] ?? json_encode(filter_params($this->request->all(), $this->filterArray));
         $data['time'] = $data['time'] ?? time();
 
         return DB::table($tableName)->insert($data);
